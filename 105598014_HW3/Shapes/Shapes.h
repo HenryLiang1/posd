@@ -57,6 +57,10 @@ public:
         bool check2 = lengthOfSide2 + lengthOfSide3 > lengthOfSide1;
         bool check3 = lengthOfSide1 + lengthOfSide3 > lengthOfSide2;
 
+        if(lengthOfSide1 < 0 || lengthOfSide2 < 0 || lengthOfSide3 < 0){
+            return false;
+        }
+
         if(check1 == false || check2 == false || check3 == false){
             return false;
         }

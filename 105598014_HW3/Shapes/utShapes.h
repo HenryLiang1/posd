@@ -3,6 +3,7 @@
 
 #include "..\cppunitlite\TestHarness.h"
 #include "Shapes.h"
+#include "Media.h"
 
 const double epsilon = 0.000001;
 // added this line
@@ -150,6 +151,19 @@ TEST(eighth_4, comboShapeArea) {
     ComboShape comboShape2(ss2);
     comboShape2.add(&comboShape);
     DOUBLES_EQUAL(320,comboShape2.area(),epsilon);
+}
+
+
+//HW3
+TEST(ninth_2, ComboMediaArea){
+    Rectangle r1(0,0,4,2);
+    Rectangle r2(0,0,4,3);
+    ShapeMedia sR1(&r1);
+    ShapeMedia sR2(&r2);
+    std::vector<Media*> ms = {&sR1, &sR2};
+    ComboMedia cs(ms);
+    DOUBLES_EQUAL(20, cs.area(), epsilon);
+
 }
 
 #endif // UTSHAPES_H_INCLUDED
