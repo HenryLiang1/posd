@@ -4,19 +4,31 @@
 #include <vector>       // std::vector
 #include <iostream>     // std::cout
 #include <algorithm>    // std::sort
+#include <string>
+#include <sstream>
 
 class Shape {
 public:
     virtual double area() const = 0;
     virtual double perimeter() const = 0;
+    virtual std::string description() const = 0;
 };
 
 class Rectangle : public Shape {
 public:
     Rectangle(double ulcx, double ulcy, double length, double width):
         x(ulcx),y(ulcy),l(length),w(width){}
-    double area() const {return l*w;}
-    double perimeter() const {return 2*(l+w);}
+    double area() const {
+        return l*w;
+    }
+    double perimeter() const {
+        return 2*(l+w);
+    }
+    std::string description() const{
+        std::stringstream ss;
+        ss<<"r("<<x<<","<<y<<","<<l<<","<<w<<") ";
+        return ss.str();
+    }
 private:
     double x,y,l,w;
 };
@@ -25,8 +37,17 @@ class Circle : public Shape{
 public:
     Circle(double centerX,double centerY,double radius):
         cx(centerX),cy(centerY),r(radius){}
-    double area()const {return 3*r*r;}
-    double perimeter() const {return 3*2*r;}
+    double area()const {
+        return 3*r*r;
+    }
+    double perimeter() const {
+        return 3*2*r;
+    }
+    std::string description() const{
+        std::stringstream ss;
+        ss<<"c("<<cx<<","<<cy<<","<<r<<") ";
+        return ss.str();
+    }
 private:
     double cx,cy,r;
 };
@@ -67,70 +88,15 @@ public:
 
         return true;
     }
+    std::string description() const{
+        std::stringstream ss;
+        ss<<"t("<<x1<<","<<y1<<","<<x2<<","<<y2<<","<<x3<<","<<y3<<") ";
+        return ss.str();
+    }
+
 private:
     double x1,y1,x2,y2,x3,y3;
     double lengthOfSide1,lengthOfSide2,lengthOfSide3;
 };
-
-double sumOfArea(std::vector<Rectangle> rects){
-    double total =0;
-    for (Rectangle r: rects)
-        total += r.area();
-    return total;
-}
-
-double sumOfArea(const std::vector<Shape *> &shapes){
-    double total =0;
-    for (Shape *s: shapes)
-        total += s->area();
-    return total;
-}
-
-double sumOfPerimeter(const std::vector<Shape *> &shapes){
-    double total=0;
-    for(Shape *s: shapes)
-        total += s->perimeter();
-    return total;
-}
-
-bool sortByIncreasingAreaOperator(Shape *si, Shape *sj){
-    return si->area() < sj->area();
-}
-
-bool sortByDecreasingPerimeterOperator(Shape *si, Shape *sj){
-    return si->perimeter() > sj->perimeter();
-}
-
-double maxArea(std::vector<Shape *> &shapes){
-    std::vector<Shape *>::iterator result = std::max_element(shapes.begin(), shapes.end(), sortByIncreasingAreaOperator);
-    return (*result)->area();
-}
-
-void sortByDecreasingPerimeter(std::vector<Shape *> &shapes){
-    std::sort(shapes.begin(), shapes.end(), sortByDecreasingPerimeterOperator);
-}
-
-class ComboShape : public Shape{
-public:
-    ComboShape(const std::vector<Shape *> & shapes):
-        ss(shapes) {};
-
-    void add(Shape * shape){
-        ss.push_back(shape);
-    }
-
-    double area() const {
-        return sumOfArea(ss);
-    }
-
-    double perimeter() const{
-        return sumOfPerimeter(ss);
-    }
-
-private:
-    std::vector<Shape *> ss;
-
-};
-
 
 #endif // SHAPES_H_INCLUDED

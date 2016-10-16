@@ -4,11 +4,12 @@
 #include "..\cppunitlite\TestHarness.h"
 #include "Shapes.h"
 #include "Media.h"
+#include <string>
 
 const double epsilon = 0.000001;
 // added this line
 
-//HW1
+//test shape
 TEST (first, Rectangle) {
     Rectangle rect(0,0,4,2);
     DOUBLES_EQUAL(8,rect.area(),epsilon);
@@ -45,6 +46,7 @@ TEST (third_3, Triangle) {
     DOUBLES_EQUAL(16,tri.perimeter(),epsilon);
 }
 
+//test triangle sides
 TEST (third_4, Triangle) {
     Triangle nonTri(0,0,3,0,6,0);
     CHECK_EQUAL(false,nonTri.checkSide());
@@ -60,100 +62,6 @@ TEST (third_6, Triangle) {
     DOUBLES_EQUAL(-1,nonTri.area(),epsilon);
 }
 
-TEST (fourth, sumOfArea) {
-    Rectangle r1(0,0,4,2);
-    Circle c1(0,0,10);
-    Triangle t1(0,0,3,4,6,0);
-    std::vector<Shape *> ss;
-    ss.push_back(&r1);
-    ss.push_back(&c1);
-    ss.push_back(&t1);
-    DOUBLES_EQUAL(320,sumOfArea(ss),epsilon);
-}
-
-TEST (fifth, sumOfPerimeter) {
-    Rectangle r1(0,0,4,2);
-    Circle c1(0,0,10);
-    Triangle t1(0,0,3,4,6,0);
-    std::vector<Shape *> ss;
-    ss.push_back(&r1);
-    ss.push_back(&c1);
-    ss.push_back(&t1);
-    DOUBLES_EQUAL(88,sumOfPerimeter(ss),epsilon);
-}
-
-
-//HW2
-TEST(sixth, maxArea) {
-    Rectangle r1(0,0,4,2);
-    Circle c1(0,0,10);
-    Triangle t1(0,0,3,4,6,0);
-    std::vector<Shape *> ss;
-    ss.push_back(&r1);
-    ss.push_back(&c1);
-    ss.push_back(&t1);
-    DOUBLES_EQUAL(300,maxArea(ss),epsilon);
-}
-
-TEST(seventh, sortByDecreasingPerimeter) {
-    Rectangle r1(0,0,4,2);
-    Circle c1(0,0,10);
-    Triangle t1(0,0,3,4,6,0);
-    std::vector<Shape *> ss;
-    ss.push_back(&r1);
-    ss.push_back(&c1);
-    ss.push_back(&t1);
-    DOUBLES_EQUAL(12,ss[0]->perimeter(),epsilon);
-    DOUBLES_EQUAL(60,ss[1]->perimeter(),epsilon);
-    DOUBLES_EQUAL(16,ss[2]->perimeter(),epsilon);
-
-    sortByDecreasingPerimeter(ss);
-    DOUBLES_EQUAL(60,ss[0]->perimeter(),epsilon);
-    DOUBLES_EQUAL(16,ss[1]->perimeter(),epsilon);
-    DOUBLES_EQUAL(12,ss[2]->perimeter(),epsilon);
-}
-
-TEST(eighth, comboShapePerimeter) {
-    Rectangle r1(0,0,4,2);
-    Circle c1(0,0,10);
-    std::vector<Shape *> ss{&r1,&c1};
-    ComboShape comboShape(ss);
-    DOUBLES_EQUAL(72,comboShape.perimeter(),epsilon);
-}
-
-TEST(eighth_2, comboShapePerimeter) {
-    Rectangle r1(0,0,4,2);
-    Circle c1(0,0,10);
-    Triangle t1(0,0,3,4,6,0);
-    std::vector<Shape *> ss{&r1,&c1};
-    ComboShape comboShape(ss);
-    std::vector<Shape *> ss2{&t1};
-    ComboShape comboShape2(ss2);
-    comboShape2.add(&comboShape);
-    DOUBLES_EQUAL(88,comboShape2.perimeter(),epsilon);
-}
-
-TEST(eighth_3, comboShapeArea) {
-    Rectangle r1(0,0,4,2);
-    Circle c1(0,0,10);
-    std::vector<Shape *> ss{&r1,&c1};
-    ComboShape comboShape(ss);
-    DOUBLES_EQUAL(308,comboShape.area(),epsilon);
-}
-
-TEST(eighth_4, comboShapeArea) {
-    Rectangle r1(0,0,4,2);
-    Circle c1(0,0,10);
-    Triangle t1(0,0,3,4,6,0);
-    std::vector<Shape *> ss{&r1,&c1};
-    ComboShape comboShape(ss);
-    std::vector<Shape *> ss2{&t1};
-    ComboShape comboShape2(ss2);
-    comboShape2.add(&comboShape);
-    DOUBLES_EQUAL(320,comboShape2.area(),epsilon);
-}
-
-
 //HW3
 TEST(ninth_2, ComboMediaArea){
     Rectangle r1(0,0,4,2);
@@ -163,7 +71,111 @@ TEST(ninth_2, ComboMediaArea){
     std::vector<Media*> ms = {&sR1, &sR2};
     ComboMedia cs(ms);
     DOUBLES_EQUAL(20, cs.area(), epsilon);
+}
+
+TEST(shapeMedia, AreaVisitor){
+    Rectangle r1(0,0,4,2);
+    ShapeMedia sR1(&r1);
+    AreaVisitor av;
+    sR1.accept(&av);
+    DOUBLES_EQUAL(8,av.getArea(),epsilon);;
+}
+
+TEST(comboMedia, AreaVisitor){
+    Rectangle r1(0,2,4,2);
+    Circle c1(0,0,10);
+    ShapeMedia sR1(&r1);
+    ShapeMedia sC1(&c1);
+    std::vector<Media *> ms = {&sR1, &sC1};
+    ComboMedia cs(ms);
+    AreaVisitor av;
+    cs.accept(&av);
+    DOUBLES_EQUAL(308, av.getArea(),epsilon);
+}
+
+//Combo ---- Combo----------Rectangle
+//		       |      |
+//		       |      ----Triangle
+//		       ---Triangle
+TEST(ComboMedia, AreaVisitor){
+    Rectangle r1(0,2*sqrt(3),2,2*sqrt(3));
+    Triangle t1(0,0,-1,sqrt(3),0,2*sqrt(3));
+    Triangle t2(2,0,3,sqrt(3),2,2*sqrt(3));
+    ShapeMedia sR1(&r1);
+    ShapeMedia sT1(&t1);
+    ShapeMedia sT2(&t2);
+    std::vector<Media *> ms;
+    ComboMedia cHexgon(ms);
+    cHexgon.add(&sR1);
+    cHexgon.add(&sT1);
+    cHexgon.add(&sT2);
+    AreaVisitor av;
+    cHexgon.accept(&av);
+    DOUBLES_EQUAL(6*sqrt(3),av.getArea(),epsilon);
+
+    ComboMedia cms(ms);
+    cms.add(&cHexgon);
+    DOUBLES_EQUAL(6*sqrt(3),av.getArea(),epsilon);
+}
+
+//Combo ---- Combo----------Rectangle
+//		       |      |
+//		       |      ----Triangle
+//		       ---Triangle
+TEST(ComboMedia, PerimeterVisitor){
+    Rectangle r1(0,2*sqrt(3),2,2*sqrt(3));
+    Triangle t1(0,0,-1,sqrt(3),0,2*sqrt(3));
+    Triangle t2(2,0,3,sqrt(3),2,2*sqrt(3));
+    ShapeMedia sR1(&r1);
+    ShapeMedia sT1(&t1);
+    ShapeMedia sT2(&t2);
+    std::vector<Media *> ms = {&sR1,&sT1,&sT2};
+    ComboMedia cHexgon(ms);
+    PerimeterVisitor pv;
+    cHexgon.accept(&pv);
+    DOUBLES_EQUAL(12+8*sqrt(3),pv.getPerimeter(),epsilon);
+
+    ComboMedia cms(ms);
+    cms.add(&cHexgon);
+    DOUBLES_EQUAL(12+8*sqrt(3),pv.getPerimeter(),epsilon);
 
 }
+
+TEST(ShapeMedia, DescriptionVisitor){
+    Rectangle r1(0,0,4,2);
+    ShapeMedia sR1(&r1);
+    DescriptionVisitor dv;
+    sR1.accept(&dv);
+    CHECK(std::string("r(0,0,4,2) ") == dv.getDescription());
+}
+
+TEST(ComboMedia, DescriptionVisitor){
+    Rectangle r1(0,0,4,2);
+    Triangle t1(0,0,3,0,6,0);
+    Circle c1(5,5,10);
+    ShapeMedia sR1(&r1);
+    ShapeMedia sT1(&t1);
+    ShapeMedia sC1(&c1);
+    std::vector<Media *> ms = {&sR1,&sT1,&sC1};
+    ComboMedia cHexgon(ms);
+    DescriptionVisitor dv;
+    cHexgon.accept(&dv);
+    CHECK(std::string("combo(r(0,0,4,2) t(0,0,3,0,6,0) c(5,5,10) )") == dv.getDescription())
+}
+
+TEST(IllegalAdd, ShapeMedia){
+    Rectangle r1(0,0,4,2);
+    Circle c1 (0,0,10);
+    ShapeMedia sR1(&r1);
+    ShapeMedia sC1(&c1);
+    try{
+        sR1.add(&sC1);
+        FAIL("should not be here");
+    }
+    catch(std::string s){
+        CHECK(std::string("Illegal: add on media") == s);
+    }
+}
+
 
 #endif // UTSHAPES_H_INCLUDED

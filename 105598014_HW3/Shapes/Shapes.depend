@@ -271,3 +271,44 @@
 
 1476244640 c:\users\henry\desktop\posd\105598014_hw2\shapes\media.h
 
+1476291271 source:c:\users\a8859\documents\posd\105598014_hw3\shapes\main.cpp
+	"..\cppunitlite\TestHarness.h"
+	"utShapes.h"
+
+1476291271 c:\users\a8859\documents\posd\105598014_hw3\cppunitlite\testharness.h
+	"Test.h"
+	"TestResult.h"
+	"Failure.h"
+	"TestRegistry.h"
+
+1476291271 c:\users\a8859\documents\posd\105598014_hw3\cppunitlite\test.h
+	<cmath>
+	"SimpleString.h"
+
+1476291271 c:\users\a8859\documents\posd\105598014_hw3\cppunitlite\simplestring.h
+
+1476291271 c:\users\a8859\documents\posd\105598014_hw3\cppunitlite\testresult.h
+
+1476291271 c:\users\a8859\documents\posd\105598014_hw3\cppunitlite\failure.h
+	"SimpleString.h"
+
+1476291271 c:\users\a8859\documents\posd\105598014_hw3\cppunitlite\testregistry.h
+
+1476609158 c:\users\a8859\documents\posd\105598014_hw3\shapes\utshapes.h
+	"..\cppunitlite\TestHarness.h"
+	"Shapes.h"
+	"Media.h"
+	<string>
+
+1476588518 c:\users\a8859\documents\posd\105598014_hw3\shapes\shapes.h
+	<vector>
+	<iostream>
+	<algorithm>
+	<string>
+	<sstream>
+
+1476609165 c:\users\a8859\documents\posd\105598014_hw3\shapes\media.h
+
+1476445583 c:\users\a8859\documents\posd\105598014_hw3\shapes\mediavisitor.h
+	"Media.h"
+
