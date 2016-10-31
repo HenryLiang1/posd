@@ -1,7 +1,7 @@
 #ifndef MEDIA_H_INCLUDED
 #define MEDIA_H_INCLUDED
 
-       class ShapeMedia;
+class ShapeMedia;
 class ComboMedia;
 
 class MediaVisitor{
@@ -20,10 +20,11 @@ public :
     }
 };
 
-class ShapeMedia :public Media {
+class ShapeMedia : public Media {
 private:
     Shape* shape ;
 public :
+    ShapeMedia () {};
     ShapeMedia( Shape* s ): shape(s) {}
     double area() const {
         return shape->area();
@@ -38,12 +39,16 @@ public :
     Shape * getShape() const {
          return shape;
     }
+    void * setShape(Shape * s) {
+        shape = s;
+    }
 };
 
 class ComboMedia : public Media {
 private:
     std::vector<Media*> media;
 public:
+    ComboMedia () {}
     ComboMedia( std::vector<Media*> m ) : media(m) {}
     double area() const{
         double total =0;
@@ -119,6 +124,44 @@ public:
     }
 private:
     std::string desc;
+};
+
+
+class MediaBuilder{
+public:
+    virtual void buildComboMedia() = 0;
+    virtual void buildShapeMedia(Shape * s) = 0;
+    virtual Media * getMedia() = 0;
+};
+
+class ShapeMediaBuilder : public MediaBuilder{
+public:
+    ShapeMediaBuilder (): shapeMedia(0) {}
+    void buildComboMedia() {}
+    void buildShapeMedia(Shape * s){
+        shapeMedia = new ShapeMedia(s);
+        //shapeMedia->setShape(s);
+    }
+    Media * getMedia(){
+        return shapeMedia;
+    }
+private:
+    ShapeMedia * shapeMedia ;
+};
+
+class ComboMediaBuilder : public MediaBuilder{
+public:
+    ComboMediaBuilder (): comboMedia(0) {}
+    void buildComboMedia(){
+        comboMedia = new ComboMedia();
+    }
+    void buildShapeMedia(Shape * s) {
+        if(!comboMedia)
+            throw std::string("Null pointer exception!!!");
+        comboMedia->add(new ShapeMedia(s));
+    }
+private:
+    ComboMedia * comboMedia;
 };
 
 

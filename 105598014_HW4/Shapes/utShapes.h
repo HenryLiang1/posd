@@ -63,36 +63,6 @@ TEST (third_6, Triangle) {
 }
 
 //HW3
-TEST(ninth_2, ComboMediaArea){
-    Rectangle r1(0,0,4,2);
-    Rectangle r2(0,0,4,3);
-    ShapeMedia sR1(&r1);
-    ShapeMedia sR2(&r2);
-    std::vector<Media*> ms = {&sR1, &sR2};
-    ComboMedia cs(ms);
-    DOUBLES_EQUAL(20, cs.area(), epsilon);
-}
-
-TEST(shapeMedia, AreaVisitor){
-    Rectangle r1(0,0,4,2);
-    ShapeMedia sR1(&r1);
-    AreaVisitor av;
-    sR1.accept(&av);
-    DOUBLES_EQUAL(8,av.getArea(),epsilon);;
-}
-
-TEST(comboMedia, AreaVisitor){
-    Rectangle r1(0,2,4,2);
-    Circle c1(0,0,10);
-    ShapeMedia sR1(&r1);
-    ShapeMedia sC1(&c1);
-    std::vector<Media *> ms = {&sR1, &sC1};
-    ComboMedia cs(ms);
-    AreaVisitor av;
-    cs.accept(&av);
-    DOUBLES_EQUAL(308, av.getArea(),epsilon);
-}
-
 //Combo ---- Combo----------Rectangle
 //		       |      |
 //		       |      ----Triangle
@@ -105,16 +75,16 @@ TEST(ComboMedia, AreaVisitor){
     ShapeMedia sT1(&t1);
     ShapeMedia sT2(&t2);
     std::vector<Media *> ms;
-    ComboMedia cHexgon(ms);
-    cHexgon.add(&sR1);
-    cHexgon.add(&sT1);
-    cHexgon.add(&sT2);
-    AreaVisitor av;
-    cHexgon.accept(&av);
-    DOUBLES_EQUAL(6*sqrt(3),av.getArea(),epsilon);
+    ComboMedia cm1(ms);
+    cm1.add(&sR1);
+    cm1.add(&sT1);
 
-    ComboMedia cms(ms);
-    cms.add(&cHexgon);
+    ComboMedia cm2(ms);
+    cm1.add(&sT2);
+    cm2.add(&cm1);
+
+    AreaVisitor av;
+    cm2.accept(&av);
     DOUBLES_EQUAL(6*sqrt(3),av.getArea(),epsilon);
 }
 
@@ -129,14 +99,17 @@ TEST(ComboMedia, PerimeterVisitor){
     ShapeMedia sR1(&r1);
     ShapeMedia sT1(&t1);
     ShapeMedia sT2(&t2);
-    std::vector<Media *> ms = {&sR1,&sT1,&sT2};
-    ComboMedia cHexgon(ms);
-    PerimeterVisitor pv;
-    cHexgon.accept(&pv);
-    DOUBLES_EQUAL(12+8*sqrt(3),pv.getPerimeter(),epsilon);
+    std::vector<Media *> ms;
+    ComboMedia cm1(ms);
+    cm1.add(&sR1);
+    cm1.add(&sT1);
 
-    ComboMedia cms(ms);
-    cms.add(&cHexgon);
+    ComboMedia cm2(ms);
+    cm1.add(&sT2);
+    cm2.add(&cm1);
+
+    PerimeterVisitor pv;
+    cm2.accept(&pv);
     DOUBLES_EQUAL(12+8*sqrt(3),pv.getPerimeter(),epsilon);
 
 }
@@ -163,9 +136,24 @@ TEST(ComboMedia, DescriptionVisitor){
     CHECK(std::string("combo(r(0,0,4,2) t(0,0,3,0,6,0) c(5,5,10) )") == dv.getDescription())
 }
 
+
+TEST(AddMedia, ComboMedia){
+    Rectangle r1(0,0,4,2);
+    Rectangle r2(0,0,4,3);
+    ShapeMedia sR1(&r1);
+    ShapeMedia sR2(&r2);
+    std::vector<Media *> ms;
+    ComboMedia cm(ms);
+    cm.add(&sR1);
+    cm.add(&sR2);
+    AreaVisitor av;
+    cm.accept(&av);
+    DOUBLES_EQUAL(20,av.getArea(),epsilon);
+}
+
 TEST(IllegalAdd, ShapeMedia){
     Rectangle r1(0,0,4,2);
-    Circle c1 (0,0,10);
+    Circle c1(0,0,10);
     ShapeMedia sR1(&r1);
     ShapeMedia sC1(&c1);
     try{
@@ -177,5 +165,35 @@ TEST(IllegalAdd, ShapeMedia){
     }
 }
 
+
+//HW4
+TEST(ShapeMediaBuilder, MediaBuilder){
+    ShapeMediaBuilder sMB;
+    Circle c1(0,0,5);
+    sMB.buildShapeMedia(&c1);
+    Media * m = sMB.getMedia();
+    DescriptionVisitor dv;
+    m->accept(&dv);
+    CHECK(std::string("c(0,0,5) ") == dv.getDescription());
+}
+
+//buildShapeMedia issue
+TEST(ComboMediaBuilder, MediaBuilder){
+    ShapeMediaBuilder sMB;
+    Rectangle r1(10,0,15,5);
+    Circle c1(12,5,2);
+    Rectangle r2(0,0,25,20);
+    sMB.buildShapeMedia(&r1);
+    sMB.buildShapeMedia(&c1);
+    sMB.buildShapeMedia(&r2);
+    Media * m = sMB.getMedia();
+    DescriptionVisitor dv;
+    m->accept(&dv);
+    CHECK(std::string("r(0,0,25,20) ") == dv.getDescription());
+
+    /*ComboMediaBuilder cMB;
+    cMB.buildComboMedia()*/
+
+}
 
 #endif // UTSHAPES_H_INCLUDED
