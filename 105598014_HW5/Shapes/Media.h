@@ -3,28 +3,65 @@
 
 class ShapeMedia;
 class ComboMedia;
+class TextMedia;
 
 class MediaVisitor{
 public:
     virtual void visit(ShapeMedia *sm) = 0;
-    virtual void visit(ComboMedia *cm) = 0;
+    virtual void visit(ComboMedia *cm, bool start) = 0;
+    virtual void visit(TextMedia *tm) = 0;
+
 };
 
 class Media {
 public :
     virtual double area() const = 0 ;
     virtual double perimeter() const = 0;
-    virtual void accept(MediaVisitor *mv);
+    virtual void accept(MediaVisitor *mv) = 0;
     virtual void add(Media * m){
         throw std::string("Illegal: add on media");
     }
 };
 
+class Text{
+private:
+    Shape * shape;
+    std::string btext;
+public:
+    Text(Rectangle * boundingbox, std::string text): shape(boundingbox), btext(text) {};
+    Shape * getShape(){
+        return shape;
+    }
+    std::string getBText(){
+        return btext;
+    }
+};
+
+class TextMedia : public Media{
+private:
+    Text * text;
+public:
+    TextMedia(Text* t): text(t) {}
+    double area() const {
+        return text->getShape()->area();
+    }
+    double perimeter() const {
+        return text->getShape()->perimeter();
+    }
+
+    void accept(MediaVisitor *mv) {
+         mv->visit(this);
+    }
+    Text * getText(){
+        return text;
+    }
+};
+
 class ShapeMedia : public Media {
 private:
-    Shape* shape ;
+    Shape * shape ;
 public :
-    ShapeMedia () {};
+    ShapeMedia(){};
     ShapeMedia( Shape* s ): shape(s) {}
     double area() const {
         return shape->area();
@@ -38,9 +75,6 @@ public :
     }
     Shape * getShape() const {
          return shape;
-    }
-    void * setShape(Shape * s) {
-        shape = s;
     }
 };
 
@@ -68,10 +102,22 @@ public:
     }
 
     void accept(MediaVisitor *mv){
+        mv->visit(this,true);
         for(Media *m: media){
             m->accept(mv);
         }
-        mv->visit(this);
+        mv->visit(this,false);
+    }
+    void removeMedia(Media *m){
+        for(unsigned int i=0; i<media.size();i++){
+            if(dynamic_cast<ComboMedia*>(media[i])){
+                ComboMedia *cm = dynamic_cast<ComboMedia*>(media[i]);
+                cm->removeMedia(m);
+            }
+            if(media[i] == m){
+                media.erase(media.begin()+i);
+            }
+        }
     }
 };
 
@@ -81,8 +127,12 @@ public:
         area = sm->getShape()->area();
     }
 
-    void visit(ComboMedia *cm){
+    void visit(ComboMedia *cm, bool start){
         area = cm->area();
+    }
+
+    void visit(TextMedia *tm){
+        area = tm->area();
     }
 
     double getArea(){
@@ -98,9 +148,11 @@ public:
     void visit(ShapeMedia *sm){
         perimeter = sm->getShape()->perimeter();
     }
-    void visit(ComboMedia *cm){
-
+    void visit(ComboMedia *cm, bool start){
         perimeter = cm->perimeter();
+    }
+    void visit(TextMedia *tm){
+        perimeter = tm->perimeter();
     }
 
     double getPerimeter(){
@@ -116,9 +168,16 @@ public:
     void visit(ShapeMedia *sm){
         desc += sm->getShape()->description();
     }
-    void visit(ComboMedia *cm){
-        desc = std::string("combo(")+desc+std::string(")");
+    void visit(ComboMedia *cm, bool start){
+        if(start)
+            desc = desc + std::string("combo(");
+        else
+            desc = desc + std::string(")");
     }
+    void visit(TextMedia *tm){
+        desc +=  tm->getText()->getBText() + " " + tm->getText()->getShape()->description();
+    }
+
     std::string getDescription(){
         return desc;
     }
@@ -137,10 +196,11 @@ public:
 class ShapeMediaBuilder : public MediaBuilder{
 public:
     ShapeMediaBuilder (): shapeMedia(0) {}
-    void buildComboMedia() {}
+    void buildComboMedia() {
+        throw std::string("Illegal: use buildShapeMedia");
+    }
     void buildShapeMedia(Shape * s){
         shapeMedia = new ShapeMedia(s);
-        //shapeMedia->setShape(s);
     }
     Media * getMedia(){
         return shapeMedia;
@@ -149,20 +209,38 @@ private:
     ShapeMedia * shapeMedia ;
 };
 
-class ComboMediaBuilder : public MediaBuilder{
+class ComboMediaBuilder : public MediaBuilder {
 public:
     ComboMediaBuilder (): comboMedia(0) {}
-    void buildComboMedia(){
-        comboMedia = new ComboMedia();
-    }
+    void buildComboMedia() {comboMedia = new ComboMedia;}
     void buildShapeMedia(Shape * s) {
         if(!comboMedia)
-            throw std::string("Null pointer exception!!!");
+            throw std::string("null point ex") ;
         comboMedia->add(new ShapeMedia(s));
+
+    }
+    void buildAddComboMedia(Media * cm){
+        comboMedia->add(cm);
+    }
+    void buildRemoveShapeMedia(Media * cm){
+        comboMedia->removeMedia(cm);
+    }
+
+    Media * getMedia(){
+        return comboMedia;
     }
 private:
     ComboMedia * comboMedia;
 };
+
+class MediaDirector{
+public:
+    void setMediaBuilder(std::stack<MediaBuilder *> *mbs){}
+    void concrete(std::string content){}
+private:
+    std::stack<MediaBuilder *> *mb;
+};
+
 
 
 #endif // MEDIA_H_INCLUDED

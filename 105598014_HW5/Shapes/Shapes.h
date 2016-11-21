@@ -6,6 +6,7 @@
 #include <algorithm>    // std::sort
 #include <string>
 #include <sstream>
+#include <stack>
 
 class Shape {
 public:
@@ -26,7 +27,7 @@ public:
     }
     std::string description() const{
         std::stringstream ss;
-        ss<<"r("<<x<<","<<y<<","<<l<<","<<w<<") ";
+        ss<<"r("<<x<<" "<<y<<" "<<l<<" "<<w<<") ";
         return ss.str();
     }
 private:
@@ -45,7 +46,7 @@ public:
     }
     std::string description() const{
         std::stringstream ss;
-        ss<<"c("<<cx<<","<<cy<<","<<r<<") ";
+        ss<<"c("<<cx<<" "<<cy<<" "<<r<<") ";
         return ss.str();
     }
 private:
@@ -90,10 +91,9 @@ public:
     }
     std::string description() const{
         std::stringstream ss;
-        ss<<"t("<<x1<<","<<y1<<","<<x2<<","<<y2<<","<<x3<<","<<y3<<") ";
+        ss<<"t("<<x1<<" "<<y1<<" "<<x2<<" "<<y2<<" "<<x3<<" "<<y3<<") ";
         return ss.str();
     }
-
 private:
     double x1,y1,x2,y2,x3,y3;
     double lengthOfSide1,lengthOfSide2,lengthOfSide3;
