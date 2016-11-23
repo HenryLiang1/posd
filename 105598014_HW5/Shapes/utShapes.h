@@ -412,4 +412,65 @@ TEST(OpenDocument, Document){
     std::cout<<content<<std::endl;
     CHECK(content == std::string("combo(r(0 0 3 2) c(0 0 5) combo(r(0 0 5 4) c(0 0 10) )combo(r(0 1 8 7) c(0 1 10) ))"));
 }
+
+TEST(MediaBuilderStack, MediaBuilder){
+    std::stack<MediaBuilder *> mbs;
+    mbs.push(new ComboMediaBuilder());
+    mbs.top()->buildComboMedia();
+
+    Rectangle r1(0,0,3,2);
+    mbs.top()->buildShapeMedia(&r1);
+    Circle c1(0,0,5);
+    mbs.top()->buildShapeMedia(&c1);
+
+    mbs.push(new ComboMediaBuilder());
+    mbs.top()->buildComboMedia();
+
+    Rectangle r2(0,0,5,4);
+    mbs.top()->buildShapeMedia(&r2);
+    Circle c2(0,0,10);
+    mbs.top()->buildShapeMedia(&c2);
+
+    Media *tcm = mbs.top()->getMedia();
+    mbs.pop();
+    mbs.top()->buildAddComboMedia(tcm);
+
+    mbs.push(new ComboMediaBuilder());
+    mbs.top()->buildComboMedia();
+
+    Rectangle r3(0,1,8,7);
+    mbs.top()->buildShapeMedia(&r3);
+    Circle c3(0,1,10);
+    mbs.top()->buildShapeMedia(&c3);
+
+    Media *tcm2 = mbs.top()->getMedia();
+    mbs.pop();
+    mbs.top()->buildAddComboMedia(tcm2);
+
+    Media * cm = mbs.top()->getMedia();
+    DescriptionVisitor dv;
+    cm->accept(&dv);
+    std::cout<<dv.getDescription()<<std::endl;
+
+}
+
+TEST(MediaDirector, MediaDirector){
+    MyDocument doc;
+    std::string content;
+    content = doc.openDocument("myShape.txt");
+
+    MediaDirector md;
+    std::stack<MediaBuilder *> mbs;
+    mbs.push(new ComboMediaBuilder());
+    mbs.top()->buildComboMedia();
+    md.setMediaBuilder(&mbs);
+    md.concrete(content);
+
+    DescriptionVisitor dv;
+    Media *cm = mbs.top()->getMedia();
+    cm->accept(&dv);
+    std::cout<<dv.getDescription()<<std::endl;
+}
+
+
 #endif // UTSHAPES_H_INCLUDED

@@ -6,7 +6,7 @@
 #include <algorithm>    // std::sort
 #include <string>
 #include <sstream>
-#include <stack>
+
 
 class Shape {
 public:

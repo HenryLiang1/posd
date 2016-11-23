@@ -1,5 +1,7 @@
 #ifndef MEDIA_H_INCLUDED
 #define MEDIA_H_INCLUDED
+#include <stack>
+#include <regex>
 
 class ShapeMedia;
 class ComboMedia;
@@ -190,6 +192,7 @@ class MediaBuilder{
 public:
     virtual void buildComboMedia() = 0;
     virtual void buildShapeMedia(Shape * s) = 0;
+    virtual void buildAddComboMedia(Media * cm){}
     virtual Media * getMedia() = 0;
 };
 
@@ -235,8 +238,16 @@ private:
 
 class MediaDirector{
 public:
-    void setMediaBuilder(std::stack<MediaBuilder *> *mbs){}
-    void concrete(std::string content){}
+    void setMediaBuilder(std::stack<MediaBuilder *> *mbs){
+        mb = mbs;
+
+    }
+    void concrete(std::string content){
+        Rectangle *r;
+        r= new Rectangle(0,0,4,2);
+        mb->top()->buildShapeMedia(r);
+        std::cout<<"concrete content: "<<content<<std::endl;
+    }
 private:
     std::stack<MediaBuilder *> *mb;
 };
