@@ -409,8 +409,8 @@ TEST(OpenDocument, Document){
 
     content = doc.openDocument("myShape.txt");
 
-    std::cout<<content<<std::endl;
-    CHECK(content == std::string("combo(r(0 0 3 2) c(0 0 5) combo(r(0 0 5 4) c(0 0 10) )combo(r(0 1 8 7) c(0 1 10) ))"));
+    //std::cout<<content<<std::endl;
+    CHECK(std::string("combo(r(0 0 3 2) c(0 0 5) combo(r(0 0 5 4) c(0 0 10) )combo(r(0 1 8 7) c(0 1 10) ))") == content);
 }
 
 TEST(MediaBuilderStack, MediaBuilder){
@@ -450,7 +450,8 @@ TEST(MediaBuilderStack, MediaBuilder){
     Media * cm = mbs.top()->getMedia();
     DescriptionVisitor dv;
     cm->accept(&dv);
-    std::cout<<dv.getDescription()<<std::endl;
+    //std::cout<<dv.getDescription()<<std::endl;
+    CHECK(std::string("combo(r(0 0 3 2) c(0 0 5) combo(r(0 0 5 4) c(0 0 10) )combo(r(0 1 8 7) c(0 1 10) ))") == dv.getDescription());
 
 }
 
@@ -469,7 +470,8 @@ TEST(MediaDirector, MediaDirector){
     DescriptionVisitor dv;
     Media *cm = mbs.top()->getMedia();
     cm->accept(&dv);
-    std::cout<<dv.getDescription()<<std::endl;
+    //std::cout<<dv.getDescription()<<std::endl;
+    //CHECK(std::string("combo(r(0 0 3 2) c(0 0 5) combo(r(0 0 5 4) c(0 0 10) )combo(r(0 1 8 7) c(0 1 10) ))") == dv.getDescription());
 }
 
 

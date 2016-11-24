@@ -243,10 +243,36 @@ public:
 
     }
     void concrete(std::string content){
+        std::regex comboReg("combo\\((.*)\\)");
+        std::regex rectReg("^(r\\((\\d+) (\\d+) (\\d+) (\\d+)\\) )");
+        std::regex circReg("^(c\\((\\d+) (\\d+) (\\d+)\\) )");
+        std::regex triaReg("^(t\\((\\d+) (\\d+) (\\d+) (\\d+) (\\d+) (\\d+)\\) )");
+        std::smatch comboSm;
+        std::smatch rectSm;
+        std::smatch circSm;
+        std::smatch triaSm;
+
+        if(std::regex_match(content, comboSm, comboReg)){
+            std::cout<<"match Combo!!"<<std::endl;
+            std::cout<<"The matchs are:"<<std::endl;
+            for(unsigned int i = 0 ; i < comboSm.size() ; i++ ){
+                std::cout << i << ": [" << comboSm[i] << "]" << std::endl;
+            }
+            //mb->top()
+        }
+
+        if(std::regex_match(std::string("r(0 0 3 2) "), rectSm, rectReg)){
+            std::cout<<"match Rectangle!!"<<std::endl;
+            std::cout<<"The match are:"<<std::endl;
+            for(unsigned int i=0; i<rectSm.size(); i++){
+                std::cout<<i<<": ["<< rectSm[i] << "]" <<std::endl;
+            }
+        }
+
         Rectangle *r;
         r= new Rectangle(0,0,4,2);
         mb->top()->buildShapeMedia(r);
-        std::cout<<"concrete content: "<<content<<std::endl;
+        //std::cout<<"concrete content: "<<content<<std::endl;
     }
 private:
     std::stack<MediaBuilder *> *mb;

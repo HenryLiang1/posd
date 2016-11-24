@@ -1,45 +1,46 @@
 # depslib dependency file v1.0
-1477826566 source:c:\users\henry\desktop\posd\105598014_hw5\shapes\main.cpp
+1479979869 source:c:\users\henry\desktop\posd\105598014_hw5\shapes\main.cpp
 	"..\cppunitlite\TestHarness.h"
 	"utShapes.h"
 
-1477826566 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\testharness.h
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\testharness.h
 	"Test.h"
 	"TestResult.h"
 	"Failure.h"
 	"TestRegistry.h"
 
-1477826566 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\test.h
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\test.h
 	<cmath>
 	"SimpleString.h"
 
-1477826566 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\simplestring.h
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\simplestring.h
 
-1477826566 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\testresult.h
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\testresult.h
 
-1477826566 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\failure.h
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\failure.h
 	"SimpleString.h"
 
-1477826566 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\testregistry.h
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\testregistry.h
 
-1479715219 c:\users\henry\desktop\posd\105598014_hw5\shapes\utshapes.h
+1479982176 c:\users\henry\desktop\posd\105598014_hw5\shapes\utshapes.h
 	<string>
 	"..\cppunitlite\TestHarness.h"
 	"Shapes.h"
 	"Media.h"
 	"Document.h"
 
-1479699265 c:\users\henry\desktop\posd\105598014_hw5\shapes\shapes.h
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\shapes\shapes.h
 	<vector>
 	<iostream>
 	<algorithm>
 	<string>
 	<sstream>
+
+1479986617 c:\users\henry\desktop\posd\105598014_hw5\shapes\media.h
 	<stack>
+	<regex>
 
-1479699243 c:\users\henry\desktop\posd\105598014_hw5\shapes\media.h
-
-1479715220 c:\users\henry\desktop\posd\105598014_hw5\shapes\document.h
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\shapes\document.h
 	<fstream>
 
 1479670106 source:c:\users\a8859\desktop\posd\105598014_hw5\shapes\main.cpp
