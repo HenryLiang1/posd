@@ -244,34 +244,104 @@ public:
     }
     void concrete(std::string content){
         std::regex comboReg("combo\\((.*)\\)");
-        std::regex rectReg("^(r\\((\\d+) (\\d+) (\\d+) (\\d+)\\) )");
-        std::regex circReg("^(c\\((\\d+) (\\d+) (\\d+)\\) )");
-        std::regex triaReg("^(t\\((\\d+) (\\d+) (\\d+) (\\d+) (\\d+) (\\d+)\\) )");
-        std::smatch comboSm;
+        std::regex innerComboReg("combo\\((.*) (\\)com|\\))");
+        std::regex rectReg("^(r\\((\\d+) (\\d+) (\\d+) (\\d+)\\) )(.*)");
+        std::regex circReg("^(c\\((\\d+) (\\d+) (\\d+)\\) )(.*)");
+        std::regex triaReg("^(t\\((\\d+) (\\d+) (\\d+) (\\d+) (\\d+) (\\d+)\\) )(.*)");
+        std::smatch sm;
         std::smatch rectSm;
         std::smatch circSm;
         std::smatch triaSm;
 
-        if(std::regex_match(content, comboSm, comboReg)){
+        if(std::regex_match(content, sm, comboReg)){
             std::cout<<"match Combo!!"<<std::endl;
             std::cout<<"The matchs are:"<<std::endl;
-            for(unsigned int i = 0 ; i < comboSm.size() ; i++ ){
-                std::cout << i << ": [" << comboSm[i] << "]" << std::endl;
-            }
-            //mb->top()
-        }
 
-        if(std::regex_match(std::string("r(0 0 3 2) "), rectSm, rectReg)){
-            std::cout<<"match Rectangle!!"<<std::endl;
-            std::cout<<"The match are:"<<std::endl;
-            for(unsigned int i=0; i<rectSm.size(); i++){
-                std::cout<<i<<": ["<< rectSm[i] << "]" <<std::endl;
+            for(unsigned int i = 0 ; i < sm.size() ; i++ ){
+                std::cout << i << ": [" << sm[i] << "]" << std::endl;
             }
-        }
 
-        Rectangle *r;
-        r= new Rectangle(0,0,4,2);
-        mb->top()->buildShapeMedia(r);
+
+                std::string ss = sm[sm.size()-1];
+
+
+                if(std::regex_match(ss, sm, comboReg)){
+                    std::cout<<"match Combo!!"<<std::endl;
+                    std::cout<<"The matchs are:"<<std::endl;
+                    mb->push(new ComboMediaBuilder());
+                    mb->top()->buildComboMedia();
+                    std::string ss = sm[sm.size()-1];
+                }
+
+                if(std::regex_match(ss, sm, rectReg)){
+
+                    std::cout<<"match Rectangle!!"<<std::endl;
+                    std::cout<<"The match are:"<<std::endl;
+                    for(unsigned int i=0; i<sm.size(); i++){
+                        std::cout<<i<<": ["<< sm[i] << "]" <<std::endl;
+                    }
+
+                    std::string x = sm[2];
+                    std::string y = sm[3];
+                    std::string l = sm[4];
+                    std::string w = sm[5];
+
+                    Rectangle *r = new Rectangle(atoi(x.c_str()), atoi(y.c_str()), atoi(l.c_str()), atoi(w.c_str()));
+                    mb->top()->buildShapeMedia(r);
+
+                    ss = sm[sm.size()-1];
+
+                //std::cout<<sm[sm.size()-1]<<std::endl;
+                }
+
+
+                if(std::regex_match(ss, sm, circReg)){
+                    std::cout<<"match Circle!!"<<std::endl;
+                    std::cout<<"The match are:"<<std::endl;
+                    for(unsigned int i=0; i<sm.size(); i++){
+                        std::cout<<i<<": ["<< sm[i] <<"]"<<std::endl;
+                    }
+
+                    std::string cx = sm[2];
+                    std::string cy = sm[3];
+                    std::string r = sm[4];
+
+                    Circle *c = new Circle(atoi(cx.c_str()), atoi(cy.c_str()), atoi(r.c_str()));
+                    mb->top()->buildShapeMedia(c);
+
+                    ss = sm[sm.size()-1];
+                }
+
+
+                if(std::regex_match(ss, sm, triaReg)){
+                    std::cout<<"match Triangle!!"<<std::endl;
+                    std::cout<<"The match are::"<<std::endl;
+                    for(unsigned int i=0;i<sm.size(); i++){
+                        std::cout<<i<<": ["<< sm[i] <<"]"<<std::endl;
+                    }
+
+                    std::string x1 = sm[2];
+                    std::string y1 = sm[3];
+                    std::string x2 = sm[4];
+                    std::string y2 = sm[5];
+                    std::string x3 = sm[6];
+                    std::string y3 = sm[7];
+
+                    Triangle *t = new Triangle(atoi(x1.c_str()), atoi(y1.c_str()), atoi(x2.c_str()), atoi(y2.c_str()), atoi(x3.c_str()), atoi(y3.c_str()));
+                    mb->top()->buildShapeMedia(t);
+
+                    ss = sm[sm.size()-1];
+                }
+
+                if(mb->size() > 1){
+                    Media * tcm = mb->top()->getMedia();
+                    mb->pop();
+                    mb->top()->buildAddComboMedia(tcm);
+
+                }
+                //std::string ssr = sm[sm.size()-1];
+                concrete(ss);
+        }
         //std::cout<<"concrete content: "<<content<<std::endl;
     }
 private:
