@@ -462,16 +462,16 @@ TEST(MediaDirector, MediaDirector){
 
     MediaDirector md;
     std::stack<MediaBuilder *> mbs;
-    mbs.push(new ComboMediaBuilder());
-    mbs.top()->buildComboMedia();
+    //mbs.push(new ComboMediaBuilder());
+   // mbs.top()->buildComboMedia();
     md.setMediaBuilder(&mbs);
     md.concrete(content);
 
     DescriptionVisitor dv;
     Media *cm = mbs.top()->getMedia();
     cm->accept(&dv);
-    std::cout<<"regex mediabuilder: "<<dv.getDescription()<<std::endl;
-    //CHECK(std::string("combo(r(0 0 3 2) c(0 0 5) combo(r(0 0 5 4) c(0 0 10) )combo(r(0 1 8 7) c(0 1 10) ))") == dv.getDescription());
+    //std::cout<<"regex mediabuilder: "<<dv.getDescription()<<std::endl;
+    CHECK(content == dv.getDescription());
 }
 
 
