@@ -240,124 +240,71 @@ class MediaDirector{
 public:
     void setMediaBuilder(std::stack<MediaBuilder *> *mbs){
         mb = mbs;
-
     }
     void concrete(std::string content){
         std::regex comboReg("combo\\((.*\\))");
         std::regex popComboReg("^\\)(.*)");
-        //std::regex innerComboReg("combo\\((.*) (\\)com|\\))");
         std::regex rectReg("^(r\\((\\d+) (\\d+) (\\d+) (\\d+)\\) )(.*)");
         std::regex circReg("^(c\\((\\d+) (\\d+) (\\d+)\\) )(.*)");
         std::regex triaReg("^(t\\((\\d+) (\\d+) (\\d+) (\\d+) (\\d+) (\\d+)\\) )(.*)");
         std::smatch sm;
-        std::smatch rectSm;
-        std::smatch circSm;
-        std::smatch triaSm;
-
 
         if(std::regex_match(content, sm, comboReg)){
-            /*std::cout<<"match Combo!!"<<std::endl;
-            std::cout<<"The matchs are:"<<std::endl;
-
-            for(unsigned int i = 0 ; i < sm.size() ; i++ ){
-                std::cout << i << ": [" << sm[i] << "]" << std::endl;
-            }*/
-                mb->push(new ComboMediaBuilder());
-                mb->top()->buildComboMedia();
-                //std::cout<<"current size : "<<mb->size()<<std::endl;
-
-                content = sm[sm.size()-1];
-        }
-
-        /*if(std::regex_match(ss, sm, comboReg)){
-            std::cout<<"match Combo!!"<<std::endl;
-            std::cout<<"The matchs are:"<<std::endl;
             mb->push(new ComboMediaBuilder());
             mb->top()->buildComboMedia();
-            std::cout<<"current size : "<<mb->size()<<std::endl;
-            std::string ss = sm[sm.size()-1];
-        }*/
 
-        if(std::regex_match(content, sm, rectReg)){
-            /*std::cout<<"match Rectangle!!"<<std::endl;
-            std::cout<<"The match are:"<<std::endl;
-            for(unsigned int i=0; i<sm.size(); i++){
-                std::cout<<i<<": ["<< sm[i] << "]" <<std::endl;
-            }*/
+            content = sm[sm.size()-1];
+        }
 
+        else if(std::regex_match(content, sm, rectReg)){
             std::string x = sm[2];
             std::string y = sm[3];
             std::string l = sm[4];
             std::string w = sm[5];
-
-            Rectangle *r = new Rectangle(atoi(x.c_str()), atoi(y.c_str()), atoi(l.c_str()), atoi(w.c_str()));
+            Rectangle *r = new Rectangle(atof(x.c_str()), atof(y.c_str()), atof(l.c_str()), atof(w.c_str()));
             mb->top()->buildShapeMedia(r);
 
             content = sm[sm.size()-1];
-
-        //std::cout<<sm[sm.size()-1]<<std::endl;
         }
 
-
-        if(std::regex_match(content, sm, circReg)){
-            /*std::cout<<"match Circle!!"<<std::endl;
-            std::cout<<"The match are:"<<std::endl;
-            for(unsigned int i=0; i<sm.size(); i++){
-                std::cout<<i<<": ["<< sm[i] <<"]"<<std::endl;
-            }*/
-
+        else if(std::regex_match(content, sm, circReg)){
             std::string cx = sm[2];
             std::string cy = sm[3];
             std::string r = sm[4];
-
-            Circle *c = new Circle(atoi(cx.c_str()), atoi(cy.c_str()), atoi(r.c_str()));
+            Circle *c = new Circle(atof(cx.c_str()), atof(cy.c_str()), atof(r.c_str()));
             mb->top()->buildShapeMedia(c);
 
             content = sm[sm.size()-1];
         }
 
-
-        if(std::regex_match(content, sm, triaReg)){
-            /*std::cout<<"match Triangle!!"<<std::endl;
-            std::cout<<"The match are::"<<std::endl;
-            for(unsigned int i=0;i<sm.size(); i++){
-                std::cout<<i<<": ["<< sm[i] <<"]"<<std::endl;
-            }*/
-
+        else if(std::regex_match(content, sm, triaReg)){
             std::string x1 = sm[2];
             std::string y1 = sm[3];
             std::string x2 = sm[4];
             std::string y2 = sm[5];
             std::string x3 = sm[6];
             std::string y3 = sm[7];
-
-            Triangle *t = new Triangle(atoi(x1.c_str()), atoi(y1.c_str()), atoi(x2.c_str()), atoi(y2.c_str()), atoi(x3.c_str()), atoi(y3.c_str()));
+            Triangle *t = new Triangle(atof(x1.c_str()), atof(y1.c_str()), atof(x2.c_str()), atof(y2.c_str()), atof(x3.c_str()), atof(y3.c_str()));
             mb->top()->buildShapeMedia(t);
 
             content = sm[sm.size()-1];
         }
 
-        if(std::regex_match(content, sm, popComboReg)){
-            /*std::cout<<"match popCombo!!"<<std::endl;
-            std::cout<<"The match are::"<<std::endl;
-            for(unsigned int i=0;i<sm.size(); i++){
-                std::cout<<i<<": ["<< sm[i] <<"]"<<std::endl;
-            }
-            std::cout<<"current size : "<<mb->size()<<std::endl;*/
-            if(mb->size() > 1 ){
+        else if(std::regex_match(content, sm, popComboReg)){
+            if(mb->size() > 1){
                 Media * tcm = mb->top()->getMedia();
                 mb->pop();
                 mb->top()->buildAddComboMedia(tcm);
             }
             content = sm[sm.size()-1];
         }
+        else{
+            throw std::string("data format is incorrect");
+        }
 
-
-        //std::cout<<"Content :"<<content<<std::endl;
-        if(content != "")
+        if(content != ""){
             concrete(content);
-
-        //std::cout<<"concrete content: "<<content<<std::endl;
+        }
     }
 private:
     std::stack<MediaBuilder *> *mb;

@@ -27,7 +27,6 @@ public:
     bool canOpenDocument(const std::string name){
         fs.open(name,std::ios::in); //success : not 0, fail : 0
         if(!fs){
-            //fs.close();
             return false;
         }
         else{
@@ -40,6 +39,10 @@ public:
         while(getline(fs, line)){
             content += line;
         }
+        if(content.size() == 0){
+            throw std::string("file data is empty");
+        }
+
         fs.close();
         return content;
     }

@@ -1,0 +1,97 @@
+# depslib dependency file v1.0
+1481114762 source:c:\users\henry\desktop\posd\105598014_hw5\shapes\main.cpp
+	"..\cppunitlite\TestHarness.h"
+	"utShapes.h"
+	"Instruction.h"
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\testharness.h
+	"Test.h"
+	"TestResult.h"
+	"Failure.h"
+	"TestRegistry.h"
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\test.h
+	<cmath>
+	"SimpleString.h"
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\simplestring.h
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\testresult.h
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\failure.h
+	"SimpleString.h"
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\cppunitlite\testregistry.h
+
+1481094059 c:\users\henry\desktop\posd\105598014_hw5\shapes\utshapes.h
+	<string>
+	"..\cppunitlite\TestHarness.h"
+	"Shapes.h"
+	"Media.h"
+	"Document.h"
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw5\shapes\shapes.h
+	<vector>
+	<iostream>
+	<algorithm>
+	<string>
+	<sstream>
+
+1481114815 c:\users\henry\desktop\posd\105598014_hw5\shapes\media.h
+	<stack>
+	<regex>
+
+1480498105 c:\users\henry\desktop\posd\105598014_hw5\shapes\document.h
+	<fstream>
+
+1481122568 c:\users\henry\desktop\posd\105598014_hw5\shapes\instruction.h
+	<regex>
+
+1481114762 source:c:\users\henry\desktop\posd\105598014_hw6\shapes\main.cpp
+	"..\cppunitlite\TestHarness.h"
+	"utShapes.h"
+	"Instruction.h"
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw6\cppunitlite\testharness.h
+	"Test.h"
+	"TestResult.h"
+	"Failure.h"
+	"TestRegistry.h"
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw6\cppunitlite\test.h
+	<cmath>
+	"SimpleString.h"
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw6\cppunitlite\simplestring.h
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw6\cppunitlite\testresult.h
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw6\cppunitlite\failure.h
+	"SimpleString.h"
+
+1479979869 c:\users\henry\desktop\posd\105598014_hw6\cppunitlite\testregistry.h
+
+1481094059 c:\users\henry\desktop\posd\105598014_hw6\shapes\utshapes.h
+	<string>
+	"..\cppunitlite\TestHarness.h"
+	"Shapes.h"
+	"Media.h"
+	"Document.h"
+
+1481160666 c:\users\henry\desktop\posd\105598014_hw6\shapes\shapes.h
+	<vector>
+	<iostream>
+	<algorithm>
+	<string>
+	<sstream>
+
+1481114815 c:\users\henry\desktop\posd\105598014_hw6\shapes\media.h
+	<stack>
+	<regex>
+
+1480498105 c:\users\henry\desktop\posd\105598014_hw6\shapes\document.h
+	<fstream>
+
+1481123078 c:\users\henry\desktop\posd\105598014_hw6\shapes\instruction.h
+	<regex>
+

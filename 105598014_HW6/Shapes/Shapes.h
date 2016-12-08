@@ -10,6 +10,7 @@
 
 class Shape {
 public:
+    //virtual void name() const = 0;
     virtual double area() const = 0;
     virtual double perimeter() const = 0;
     virtual std::string description() const = 0;
@@ -19,6 +20,9 @@ class Rectangle : public Shape {
 public:
     Rectangle(double ulcx, double ulcy, double length, double width):
         x(ulcx),y(ulcy),l(length),w(width){}
+    /*void name() const{
+        myName
+    }*/
     double area() const {
         return l*w;
     }
@@ -32,6 +36,7 @@ public:
     }
 private:
     double x,y,l,w;
+    std::string myName;
 };
 
 class Circle : public Shape{
