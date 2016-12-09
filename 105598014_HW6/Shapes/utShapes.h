@@ -6,6 +6,7 @@
 #include "Shapes.h"
 #include "Media.h"
 #include "Document.h"
+#include "Instruction.h"
 
 
 const double epsilon = 0.000001;
@@ -431,10 +432,104 @@ TEST(MediaDirector, MediaDirector){
 }
 
 //HW6
-TEST(Instruction, Media){
+/*TEST(InsertShapeInstruction, ShapeMedia){
+    Instruction ins;
+    bool isExistSM_C = ins.insertMedia("def cSmall = Circle(2,1,1)");
+    CHECK(isExistSM_C == true);
+    Media * sm_c = ins.getInsertionMedia();
+    DescriptionVisitor dv_c;
+    sm_c->accept(&dv_c);
+    CHECK(std::string("c(2 1 1) ") == dv_c.getDescription());
+
+    bool isExistSM_R  = ins.insertMedia("def rTall = Rectangle(1,10,2,8)");
+    CHECK(isExistSM_R == true);
+    Media * sm_r = ins.getInsertionMedia();
+    DescriptionVisitor dv_r;
+    sm_r->accept(&dv_r);
+    CHECK(std::string("r(1 10 2 8) ") == dv_r.getDescription());
+
+    bool isExistSM_T = ins.insertMedia("def tBig = Triangle(0,0,3,4,6,0)");
+    CHECK(isExistSM_T == true);
+    Media * sm_t = ins.getInsertionMedia();
+    DescriptionVisitor dv_t;
+    sm_t->accept(&dv_t);
+    CHECK(std::string("t(0 0 3 4 6 0) ") == dv_t.getDescription());
+}
+
+
+TEST(InsertComboInstruction, comboMedia){
+    Instruction ins;
+    bool isExistSM_C = ins.insertMedia("def cSmall = Circle(2,1,1)");
+    CHECK(isExistSM_C == true);
+    Media * sm_c = ins.getInsertionMedia();
+    DescriptionVisitor dv_c;
+    sm_c->accept(&dv_c);
+    CHECK(std::string("c(2 1 1) ") == dv_c.getDescription());
+
+    bool isExistSM_R = ins.insertMedia("def rTall = Rectangle(1,10,2,8)");
+    CHECK(isExistSM_R == true);
+    Media * sm_r = ins.getInsertionMedia();
+    DescriptionVisitor dv_r;
+    sm_r->accept(&dv_r);
+    CHECK(std::string("r(1 10 2 8) ") == dv_r.getDescription());
+
+    bool isExistCM = ins.insertMedia("def comboExclamation = combo{rTall cSmall}");
+    CHECK(isExistCM == true);
+    Media * cm = ins.getInsertionMedia();
+    DescriptionVisitor dv_combo;
+    cm->accept(&dv_combo);
+    CHECK(std::string("combo(c(2 1 1) r(1 10 2 8) )") == dv_combo.getDescription());
 
 }
 
+TEST(QueryMediaArea, Media){
+    Instruction ins;
+    bool isExistSM_C = ins.insertMedia("def cSmall = Circle(2,1,1)");
+    CHECK(isExistSM_C == true);
+    Media * sm_c = ins.getInsertionMedia();
+    DescriptionVisitor dv_c;
+    sm_c->accept(&dv_c);
+    CHECK(std::string("c(2 1 1) ") == dv_c.getDescription());
+
+    std::string name_c = sm_c->getName();
+    bool isExistAreaSM_C = ins.queryMedia(name_c + ".area?");
+    CHECK(isExistAreaSM_C == true);
+    Media * sm_area = ins.getTargetQueryMedia();
+    AreaVisitor av_c;
+    sm_area->accept(&av_c);
+    DOUBLES_EQUAL(3, av_c.getArea(), epsilon);
+
+}
+
+TEST(QueryMediaPerimeter, Media){
+    Instruction ins;
+    bool isExistSM_C = ins.insertMedia("def cSmall = Circle(2,1,1)");
+    CHECK(isExistSM_C == true);
+    Media * sm_c = ins.getInsertionMedia();
+    DescriptionVisitor dv_c;
+    sm_c->accept(&dv_c);
+    CHECK(std::string("c(2 1 1) ") == dv_c.getDescription());
+
+    std::string name_c = sm_c->getName();
+    bool isExistAreaSM_C = ins.queryMedia(name_c + ".perimeter?");
+    CHECK(isExistAreaSM_C == true);
+    Media * sm_peri = ins.getTargetQueryMedia();
+    PerimeterVisitor pv_c;
+    sm_peri->accept(&pv_c);
+    DOUBLES_EQUAL(6, pv_c.getPerimeter(), epsilon);
+}
+
+TEST(OpenInstructionDocument, Document){
+    MyInstructionDocument instrDoc;
+    std::vector<std::string> instr;
+    instr = instrDoc.openDocument("myInstr.txt");
+    for(unsigned int i = 0; i < instr.size(); i++){
+        std::cout<<instr[i]<<std::endl;
+    }
+
+    instrDoc.writeDocument("savedata.txt", instr);
+
+}*/
 
 
 #endif // UTSHAPES_H_INCLUDED

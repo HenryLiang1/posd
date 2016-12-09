@@ -10,7 +10,6 @@
 
 class Shape {
 public:
-    //virtual void name() const = 0;
     virtual double area() const = 0;
     virtual double perimeter() const = 0;
     virtual std::string description() const = 0;
@@ -20,9 +19,6 @@ class Rectangle : public Shape {
 public:
     Rectangle(double ulcx, double ulcy, double length, double width):
         x(ulcx),y(ulcy),l(length),w(width){}
-    /*void name() const{
-        myName
-    }*/
     double area() const {
         return l*w;
     }
@@ -56,6 +52,7 @@ public:
     }
 private:
     double cx,cy,r;
+    std::string myName;
 };
 
 class Triangle : public Shape{
@@ -102,6 +99,7 @@ public:
 private:
     double x1,y1,x2,y2,x3,y3;
     double lengthOfSide1,lengthOfSide2,lengthOfSide3;
+    std::string myName;
 };
 
 #endif // SHAPES_H_INCLUDED

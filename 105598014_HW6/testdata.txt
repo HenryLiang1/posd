@@ -1,0 +1,14 @@
+def cSmall = Circle(2,1,1)
+def rTall = Rectangle(2,1,1,6)
+def cMale = Circle(0,0,3)
+def combo1 = combo{rTall cSmall cMale}
+def combo2 = combo{combo1 rTall cSmall cMale}
+def combo3 = combo{rTall cSmall cMale combo2}
+def cMale = Circle(0,0,3)
+add cMale to comboExclamation
+delete cSmall from comboExclamation
+delete cMale
+save comboExclamation to ¡§myShapes.txt¡¨
+
+load "myInstr.txt"
+¥ÎFACEBOOKÁ¿
